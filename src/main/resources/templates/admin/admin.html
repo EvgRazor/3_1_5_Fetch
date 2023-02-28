@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+  <html lang="en" xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+  <title th:text="${_userPrincipal.getName()}+' '+ page"></title>
+  </head>
+<body>
+<!-- header nav-->
+<nav class="navbar navbar-expand-lg text-white " style="background-color: #343A40;">
+  <div class="container-fluid ">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
+      <span class="navbar-toggler-icon"> </span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="navbar-nav me-auto ">
+        <span th:text="${_userPrincipal.getEmail()}" class="fw-bold text-white " style="padding-right: 5px">  </span>
+        <span> with roles:
+         <span class="fw-normal"  >
+            <th:block th:each="role : ${_userPrincipal.getRoleSet()}">
+                  <span th:switch="${role.getName()}">
+                    <span th:case="'ROLE_ADMIN'">ADMIN</span>
+                    <span th:case="'ROLE_USER'">USER</span>
+                    <span th:case="'ROLE_SUPER_MEN'">SUPER MEN</span>
+                  </span>
+            </th:block>
+          </span>
+        </span>
+      </div>
+      <div class="navbar-nav ms-auto ">
+        <form th:method="POST" th:action="@{/logout}">
+          <input type="submit" class="btn  text-light-emphasis"   value="Logout">
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- header nav-->
+
+<div class="container-fluid" >
+  <div class="row">
+    <div class="col-lg-2 .col-sm-6" style="margin-top: 10px; ">
+      <!-- Left menu -->
+      <style ENGINE="text/css">
+        a.left_menu{ width: 112%; margin-left: -14px;}
+        a.left_menu{text-decoration:none;}
+        a.act{background-color: #0D6EFD; color: white;}
+      </style>
+      <div id="msgText">
+    <span th:switch="${_userPrincipal.getName()}">
+        <span th:case="'Admin'">
+            <a href="/admin"  class="btn btn-outline-primary border border-white text-start left_menu" >Admin</a>
+            <br>
+             <a href="/user"   class="btn btn-outline-primary border border-white text-start left_menu" >User</a>
+        </span>
+        <span th:case="'User'">
+            <a href="/user"   class="btn btn-outline-primary border border-white text-start left_menu" >User</a>
+        </span>
+    </span>
+      </div>
+
+      <script type="text/javascript">
+        try{
+          var el=document.getElementById('msgText').getElementsByTagName('a');
+          var url=document.location.href;
+          for(var i=0;i<el.length; i++){
+            if (url==el[i].href){
+              el[i].className += ' act';
+            };
+          };
+        }catch(e){}
+      </script>
+      <!-- Left menu -->
+    </div>
+
+    <div class="col-lg-10 .col-sm-6   bg-body-tertiary" style="height: 100vh; margin-bottom: -50px; padding-top: 10px; padding-left :20px " >
+      <div class="header fs-1">
+        Admin panel
+      </div>
+      <nav class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-link active " id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Users table</a>
+        <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">New User</a>
+      </nav>
+
+
+      <div class="tab-content" id="nav-tabContent ">
+        <div class="tab-pane fade show active border border border border-top-0" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <div class="alert alert-secondary fs-6 text-black fw-bold"  role="alert" style="background-color: #F7F7F7">
+            All users
+          </div>
+
+          <div class="wrapper" style="padding:17px 20px 30px; background-color: white; margin-top: -17px ">
+            <table class="table table-striped table-group-divider table table-borderless "
+                   style="border-top-color:#E6E9EC;  background-color: white; " >
+              <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Age</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+              </thead>
+              <tbody id="listUsers" class="test">
+              <!-- Старт таблицы с выводом -->
+
+              <!-- кусок html выводиться через JS в файле APP.sj -->
+
+              <!-- Конец :) таблицы с выводом -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+          <div class="alert alert-secondary fs-6 text-black fw-bold"  role="alert" style="background-color: #F7F7F7">
+            Add new user
+          </div>
+
+         <!-- New User -->
+          <div class="card-group" style="margin-top: -20px; " >
+            <div class="card" style="border-right: none"></div>
+            <div class="card" style="border-right: none">
+              <div class="card-body"  >
+                <form class="row g-3"; id ="userIdd" form="roleSet" >
+                  <div class="col-md-12 fs-6"  >
+                    <label for="validationServer01" class="form-label fw-bold fs-6 text-center" style="width: 100%; display: block; margin-bottom: 3px; ">First name</label>
+                    <input class="form-control form-control-sm  text-muted" id="validationServer01" type="text"  name="name">
+
+                    <label for="validationServer02" class="form-label fw-bold fs-6 text-center" style="width: 100%; display: block; margin-bottom: 3px; margin-top: 15px ">Last name</label>
+                    <input class="form-control form-control-sm  text-muted" id="validationServer02" type="text" name="lastName" >
+
+                    <label for="validationServer03" class="form-label fw-bold fs-6 text-center" style="width: 100%; display: block; margin-bottom: 3px; margin-top: 15px">Age</label>
+                    <input class="form-control form-control-sm  text-muted" id="validationServer03" type="text"  name="age" >
+
+                    <label for="validationServer04" class="form-label fw-bold fs-6 text-center" style="width: 100%; display: block; margin-bottom: 3px; margin-top: 15px">Email</label>
+                    <input class="form-control form-control-sm  text-muted" id="validationServer04" type="text"  name="email" >
+
+                    <label for="validationServer05" class="form-label fw-bold fs-6 text-center" style="width: 100%; display: block; margin-bottom: 3px; margin-top: 15px">Password</label>
+                    <input class="form-control form-control-sm  text-muted" id="validationServer05" type="password"  name="pass">
+
+                    <label   class="form-label fw-bold fs-6 text-center " style="width: 100%; display: block; margin-bottom: 3px; margin-top: 15px">Role</label>
+                    <select   id="roleSetAdd" name="roles" multiple class="form-select text-muted"   style="height: 60px">
+
+                    </select>
+
+                  </div>
+                  <div class="col-12" style="width: 100%; min-width: 100px" >
+                    <div class="text-center">
+                      <button class="btn btn-success " onclick="addUser()" type="button" >Add new user</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="card" style="border-left: none"></div>
+
+          </div>
+          <!-- New User -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/app.js" defer="defer"></script> <!-- APP -->
+</body>
+</html>
